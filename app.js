@@ -150,7 +150,19 @@ function nextCard() {
     if (currentIndex >= shuffledQuotes.length) {
         currentIndex = 0;
         location.reload();
+        return;
     }
+    
+    // Add next card if we have more quotes and less than 3 cards visible
+    const cardStack = document.getElementById('cardStack');
+    const visibleCards = cardStack.querySelectorAll('.card').length;
+    
+    if (visibleCards < 3 && currentIndex + visibleCards < shuffledQuotes.length) {
+        const nextIndex = currentIndex + visibleCards;
+        const card = createCard(shuffledQuotes[nextIndex], nextIndex);
+        cardStack.insertBefore(card, cardStack.firstChild);
+    }
+    
     updateCounter();
 }
 
