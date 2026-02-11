@@ -140,6 +140,13 @@ function handleMouseEnd(e) {
 
 function nextCard() {
     currentIndex++;
+    
+    // Hide instructions after first swipe
+    const instructions = document.querySelector('.instructions');
+    if (instructions) {
+        instructions.style.opacity = '0';
+    }
+    
     if (currentIndex >= shuffledQuotes.length) {
         currentIndex = 0;
         location.reload();

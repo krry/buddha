@@ -91,6 +91,10 @@ body {
 }
 
 .instructions {
+    transition: opacity 0.5s ease;
+}
+
+.instructions {
     position: absolute;
     bottom: 80px;
     color: white;
