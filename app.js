@@ -38,7 +38,14 @@ function createCard(quote, index) {
     // Click for simple advance
     card.addEventListener('click', (e) => {
         if (!isDragging) {
-            nextCard();
+            const card = e.target.closest('.card');
+            if (card) {
+                card.classList.add('swiped-right');
+                setTimeout(() => {
+                    card.remove();
+                    nextCard();
+                }, 300);
+            }
         }
     });
     
@@ -47,77 +54,87 @@ function createCard(quote, index) {
 
 function handleTouchStart(e) {
     e.preventDefault();
+    const card = e.target.closest('.card');
+    if (!card) return;
     isDragging = true;
     startX = e.touches[0].clientX;
-    e.target.classList.add('swiping');
+    card.classList.add('swiping');
 }
 
 function handleTouchMove(e) {
     if (!isDragging) return;
     e.preventDefault();
+    const card = e.target.closest('.card');
+    if (!card) return;
     currentX = e.touches[0].clientX;
     const diff = currentX - startX;
     const rotation = diff / 20;
-    e.target.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
+    card.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
 }
 
 function handleTouchEnd(e) {
     if (!isDragging) return;
     isDragging = false;
-    e.target.classList.remove('swiping');
+    const card = e.target.closest('.card');
+    if (!card) return;
+    card.classList.remove('swiping');
     
     const diff = currentX - startX;
     
     if (Math.abs(diff) > 100) {
-        // Swiped far enough
         if (diff > 0) {
-            e.target.classList.add('swiped-right');
+            card.classList.add('swiped-right');
         } else {
-            e.target.classList.add('swiped-left');
+            card.classList.add('swiped-left');
         }
         setTimeout(() => {
-            e.target.remove();
+            card.remove();
             nextCard();
         }, 300);
     } else {
-        // Snap back
-        e.target.style.transform = '';
+        card.style.transform = '';
     }
 }
 
 function handleMouseDown(e) {
+    const card = e.target.closest('.card');
+    if (!card) return;
     isDragging = true;
     startX = e.clientX;
-    e.target.classList.add('swiping');
+    card.classList.add('swiping');
 }
 
 function handleMouseMove(e) {
     if (!isDragging) return;
+    const card = e.target.closest('.card');
+    if (!card) return;
     currentX = e.clientX;
     const diff = currentX - startX;
     const rotation = diff / 20;
-    e.target.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
+    card.style.transform = `translateX(${diff}px) rotate(${rotation}deg)`;
 }
 
 function handleMouseEnd(e) {
     if (!isDragging) return;
     isDragging = false;
-    e.target.classList.remove('swiping');
+    const card = e.target.closest('.card');
+    if (!card) return;
+    card.classList.remove('swiping');
     
     const diff = currentX - startX;
     
     if (Math.abs(diff) > 100) {
         if (diff > 0) {
-            e.target.classList.add('swiped-right');
+            card.classList.add('swiped-right');
         } else {
-            e.target.classList.add('swiped-left');
+            card.classList.add('swiped-left');
         }
         setTimeout(() => {
-            e.target.remove();
+            card.remove();
             nextCard();
         }, 300);
     } else {
-        e.target.style.transform = '';
+        card.style.transform = '';
     }
 }
 
@@ -125,7 +142,6 @@ function nextCard() {
     currentIndex++;
     if (currentIndex >= shuffledQuotes.length) {
         currentIndex = 0;
-        // Reshuffle and reload
         location.reload();
     }
     updateCounter();
@@ -138,7 +154,6 @@ function updateCounter() {
 function init() {
     const cardStack = document.getElementById('cardStack');
     
-    // Create cards in reverse order (so first card is on top)
     for (let i = Math.min(3, shuffledQuotes.length) - 1; i >= 0; i--) {
         const card = createCard(shuffledQuotes[i], i);
         cardStack.appendChild(card);
@@ -147,7 +162,6 @@ function init() {
     updateCounter();
 }
 
-// Wait for DOM to be ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
