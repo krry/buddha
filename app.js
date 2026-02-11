@@ -147,4 +147,9 @@ function init() {
     updateCounter();
 }
 
-init();
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
