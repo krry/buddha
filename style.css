@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #7FB5C3 0%, #C2BCB5 50%, #8D857B 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
